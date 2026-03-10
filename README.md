@@ -1,6 +1,6 @@
 # @psmsun/video-utils
 
-YouTube and VK video ID extraction utilities + a generic `VideoEmbed` React component.
+Lightweight, zero-dependency utilities for extracting YouTube and VK video IDs from any URL format.
 
 ## Installation
 
@@ -8,15 +8,11 @@ YouTube and VK video ID extraction utilities + a generic `VideoEmbed` React comp
 npm install @psmsun/video-utils
 ```
 
-> Requires React ≥ 17 as a peer dependency.
-
 ---
 
-## Utilities
+## `extractYoutubeID(input)`
 
-### `extractYoutubeID(input)`
-
-Extracts a YouTube video ID from any YouTube URL format or returns a bare ID as-is.
+Extracts an 11-character YouTube video ID from any URL format, or returns a bare ID as-is.
 
 ```js
 import { extractYoutubeID } from "@psmsun/video-utils";
@@ -50,7 +46,7 @@ extractYoutubeID(null);
 
 ---
 
-### `extractVKIDs(input)`
+## `extractVKIDs(input)`
 
 Extracts VK video `oid` and `id` from any VK video URL format or raw ID string.
 
@@ -70,6 +66,9 @@ extractVKIDs("https://vk.com/video_ext.php?oid=-178652725&id=456239064&hash=abc"
 
 extractVKIDs("https://vk.com/clip-12345678_456239123");
 // → { oid: "-12345678", id: "456239123" }
+
+extractVKIDs(null);
+// → null
 ```
 
 **Supported formats:**
@@ -81,83 +80,9 @@ extractVKIDs("https://vk.com/clip-12345678_456239123");
 
 ---
 
-## VideoEmbed Component
+## Updating your projects
 
-A zero-dependency React component that renders the correct embed for YouTube, VK, or a self-hosted video — with a play/pause button for hosted files.
-
-### Props
-
-| Prop                 | Type                          | Default | Description                                                     |
-| -------------------- | ----------------------------- | ------- | --------------------------------------------------------------- |
-| `type`               | `"Youtube" \| "VK" \| "hosted"` | —       | Video source type                                               |
-| `id`                 | `string`                      | —       | YouTube/VK URL or bare ID                                       |
-| `src`                | `string`                      | —       | Self-hosted video file URL                                      |
-| `thumbnail`          | `string`                      | —       | Poster/thumbnail image URL                                      |
-| `autoplay`           | `boolean`                     | `true`  | Autoplay the video on load                                      |
-| `loop`               | `boolean`                     | `true`  | Loop the video                                                  |
-| `muted`              | `boolean`                     | `true`  | Start muted (required for autoplay in most browsers)            |
-| `className`          | `string`                      | —       | CSS class applied to the outer wrapper `<div>`                  |
-| `style`              | `object`                      | —       | Inline styles merged onto the outer wrapper `<div>`             |
-| `playButtonClassName`| `string`                      | —       | CSS class for the hosted video play/pause button                |
-| `playButtonStyle`    | `object`                      | —       | Inline styles merged onto the play/pause button                 |
-
-> **Note:** The component renders inside whatever container you provide. Use `style` or `className` to control dimensions (e.g., `style={{ aspectRatio: "16/9" }}`).
-
-### Examples
-
-**YouTube embed:**
-```jsx
-import { VideoEmbed } from "@psmsun/video-utils";
-
-<div style={{ aspectRatio: "16/9" }}>
-  <VideoEmbed
-    type="Youtube"
-    id="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-    autoplay
-    muted
-    loop
-  />
-</div>
-```
-
-**VK embed:**
-```jsx
-<div style={{ aspectRatio: "16/9" }}>
-  <VideoEmbed
-    type="VK"
-    id="-178652725_456239064"
-    autoplay
-    muted
-  />
-</div>
-```
-
-**Self-hosted video with play/pause button:**
-```jsx
-<div style={{ aspectRatio: "16/9" }}>
-  <VideoEmbed
-    type="hosted"
-    src="https://example.com/video.mp4"
-    thumbnail="https://example.com/poster.jpg"
-    autoplay={false}
-    playButtonStyle={{ background: "#004d9f", color: "white" }}
-  />
-</div>
-```
-
-**Thumbnail only (no video):**
-```jsx
-<VideoEmbed
-  thumbnail="https://example.com/poster.jpg"
-  style={{ aspectRatio: "16/9" }}
-/>
-```
-
----
-
-## Updating your VideoSection
-
-After installing the package, replace the local imports in your projects:
+Replace the local import wherever you have it:
 
 ```diff
 - import { extractVKIDs, extractYoutubeID } from "@/lib/videoIdUtils";
