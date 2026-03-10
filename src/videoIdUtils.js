@@ -53,8 +53,10 @@ export function extractYoutubeID(input) {
 //
 // Returns { oid: string, id: string } with correct sign on oid, or null.
 
+const negateOid = (oid) => oid.startsWith("-") ? oid : `-${oid}`;
 export function extractVKIDs(input) {
   if (!input) return null;
+
 
   const str = input.trim();
 
@@ -67,7 +69,7 @@ export function extractVKIDs(input) {
       if (url.pathname.includes("video_ext.php")) {
         const oid = url.searchParams.get("oid");
         const id = url.searchParams.get("id");
-        if (oid && id) return { oid, id };
+        if (oid && id) return { oid: negateOid(oid), id };
       }
 
       // /video-144893972_456246327  or  /video215336036_165406371
@@ -76,7 +78,7 @@ export function extractVKIDs(input) {
         /\/(?:video|clip)(-?\d+)_(\d+)/
       );
       if (pathMatch) {
-        return { oid: pathMatch[1], id: pathMatch[2] };
+        return { oid: negateOid(pathMatch[1]), id: pathMatch[2] };
       }
     } catch {
       // fall through
@@ -88,12 +90,12 @@ export function extractVKIDs(input) {
     const params = new URLSearchParams(str);
     const oid = params.get("oid");
     const id = params.get("id");
-    if (oid && id) return { oid, id };
+    if (oid && id) return { oid: negateOid(oid), id };
   }
 
   // ── 3. Raw  oid_id  or  -oid_id ───────────────────────────────────────────
   const rawMatch = str.match(/^(-?\d+)_(\d+)$/);
-  if (rawMatch) return { oid: rawMatch[1], id: rawMatch[2] };
+  if (rawMatch) return { oid: negateOid(rawMatch[1]), id: rawMatch[2] };
 
   return null;
 }
