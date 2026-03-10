@@ -1,9 +1,10 @@
 {
   "name": "@psmsun/video-utils",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "YouTube and VK video ID extraction utilities",
   "type": "module",
   "main": "src/index.js",
+  "types": "src/index.d.ts",
   "exports": {
     ".": "./src/index.js"
   },
